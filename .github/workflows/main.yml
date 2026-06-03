@@ -25,8 +25,53 @@ jobs:
       - name: Copy sources into MDK
         run: |
           rm -rf mdk/src
-          cp -r mysrc/src mdk/src
-          cp mysrc/build.gradle mdk/build.gradle
+          mkdir -p mdk/src/main/java
+          cp -r mysrc/src/java/. mdk/src/main/java/
+          cp -r mysrc/src/resources mdk/src/main/resources 2>/dev/null || true
+          cat > mdk/build.gradle << 'EOF'
+          buildscript {
+              repositories {
+                  jcenter()
+                  maven { url = "http://files.minecraftforge.net/maven" }
+              }
+              dependencies {
+                  classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+              }
+          }
+          apply plugin: 'net.minecraftforge.gradle.forge'
+          version = "2.0.2"
+          group = "eu.keray.swarm"
+          archivesBaseName = "MonsterSwarm"
+          minecraft {
+              version = "1.12.2-14.23.5.2847"
+              runDir = "run"
+              mappings = "stable_39"
+          }
+          processResources {
+              inputs.property "version", project.version
+              inputs.property "mcversion", project.minecraft.version
+              from(sourceSets.main.resources.srcDirs) {
+                  include 'mcmod.info'
+                  expand 'version': project.version, 'mcversion': project.minecraft.version
+              }
+              from(sourceSets.main.resources.srcDirs) {
+                  exclude 'mcmod.info'
+              }
+          }
+          jar {
+              from sourceSets.main.output
+              manifest {
+                  attributes([
+                      "Specification-Title": "monsterswarm",
+                      "Specification-Vendor": "keray",
+                      "Specification-Version": "1",
+                      "Implementation-Title": project.name,
+                      "Implementation-Version": "${version}",
+                      "Implementation-Vendor": "keray",
+                  ])
+              }
+          }
+          EOF
 
       - name: Cache Gradle
         uses: actions/cache@v3
@@ -49,4 +94,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: MonsterSwarm-2.0.2
-          path: mdk/build/libs/MonsterSwarm-*.jar
+          path: mdk/build/libs/MonsterSwarm-2.0.2.jar
