@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "monsterswarm",
+    "name": "Monster Swarm",
+    "description": "Mobs build, dig, and swarm intelligently.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["keray"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
