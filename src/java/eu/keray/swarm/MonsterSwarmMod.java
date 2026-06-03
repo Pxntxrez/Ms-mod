@@ -127,7 +127,7 @@ public class MonsterSwarmMod {
         if (ent == null || Config.EXCLUDED_MODS.isEmpty())
             return false;
         ResourceLocation rl = EntityList.getKey(ent);
-        return rl != null && Config.EXCLUDED_MODS.contains(rl.getResourceDomain());
+        return rl != null && Config.EXCLUDED_MODS.contains(rl.getNamespace());
     }
 
     @EventHandler
