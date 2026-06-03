@@ -21,7 +21,7 @@ jobs:
       - run: ./gradlew setupDecompWorkspace --no-daemon
         timeout-minutes: 30
       - run: ./gradlew build --no-daemon
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: MonsterSwarm-2.0.2
           path: build/libs/MonsterSwarm-*.jar
