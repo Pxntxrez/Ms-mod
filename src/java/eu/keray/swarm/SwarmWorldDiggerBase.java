@@ -31,7 +31,7 @@ public class SwarmWorldDiggerBase {
     Map<EntityCreature, Mob> mobs;
 
     public SwarmWorldDiggerBase(SwarmWorld sw) {
-        this.bridge = Blocks.COBBLESTONE;
+        this.bridge = Blocks.DIRT;
         this.vecpool = new ObjPool<>(Vec3I.class);
         this.damaged = new ValueMap<>(2048);
         this.mobs = new HashMap<>();
