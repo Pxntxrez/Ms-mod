@@ -8,20 +8,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: mysrc
+
       - uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'temurin'
+
+      - name: Download Forge MDK
+        run: |
+          curl -L -o mdk.zip "https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2855/forge-1.12.2-14.23.5.2855-mdk.zip"
+          unzip -q mdk.zip -d mdk
+          chmod +x mdk/gradlew
+
+      - name: Copy sources into MDK
+        run: |
+          rm -rf mdk/src
+          cp -r mysrc/src mdk/src
+          cp mysrc/build.gradle mdk/build.gradle
+
       - name: Cache Gradle
         uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle
-      - run: chmod +x gradlew
-      - run: ./gradlew setupDecompWorkspace --no-daemon
+          key: ${{ runner.os }}-gradle-forge
+
+      - name: Setup Forge workspace
+        working-directory: mdk
+        run: ./gradlew setupDecompWorkspace --no-daemon
         timeout-minutes: 30
-      - run: ./gradlew build --no-daemon
+
+      - name: Build mod
+        working-directory: mdk
+        run: ./gradlew build --no-daemon
+
       - uses: actions/upload-artifact@v4
         with:
           name: MonsterSwarm-2.0.2
-          path: build/libs/MonsterSwarm-*.jar
+          path: mdk/build/libs/MonsterSwarm-*.jar
