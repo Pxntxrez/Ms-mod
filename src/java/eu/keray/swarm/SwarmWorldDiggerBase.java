@@ -74,7 +74,6 @@ public class SwarmWorldDiggerBase {
         damage = this.damaged.increment(loc, damage) + damage;
         if (damage >= maxdamage) {
             this.damaged.remove(loc, 0);
-            type.harvestBlock((World) this.sw.world, null, pos, state, null, null);
             type.dropBlockAsItem((World) this.sw.world, pos, state, 0);
             this.sw.world.setBlockToAir(pos);
             if (state.getMaterial() == Material.GLASS)
