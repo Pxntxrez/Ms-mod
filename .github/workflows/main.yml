@@ -18,7 +18,7 @@ jobs:
 
       - name: Download Forge MDK
         run: |
-          curl -L -o mdk.zip "https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2855/forge-1.12.2-14.23.5.2855-mdk.zip"
+          curl -L -o mdk.zip "https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2847/forge-1.12.2-14.23.5.2847-mdk.zip"
           unzip -q mdk.zip -d mdk
           chmod +x mdk/gradlew
 
